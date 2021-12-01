@@ -9,7 +9,7 @@ public class Api {
 
     public Api() {
         retrofit = new Retrofit.Builder()
-                .baseUrl("https://v2.jokeapi.dev/joke/")
+                .baseUrl("http://v2.jokeapi.dev/joke/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
