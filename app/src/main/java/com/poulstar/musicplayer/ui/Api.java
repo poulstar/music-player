@@ -1,15 +1,18 @@
 package com.poulstar.musicplayer.ui;
 
+import com.poulstar.musicplayer.BuildConfig;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Api {
 
-    public Retrofit retrofit;
+    public static Api self = new Api();
 
-    public Api() {
+    public Retrofit retrofit;
+    private Api() {
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://v2.jokeapi.dev/joke/")
+                .baseUrl(BuildConfig.API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

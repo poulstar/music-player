@@ -29,8 +29,7 @@ public class ExampleUnitTest {
 
     @Test
     public void test_joke_api() {
-        Api api = new Api();
-        JokeService jokeService = api.retrofit.create(JokeService.class);
+        JokeService jokeService = Api.self.retrofit.create(JokeService.class);
 
         System.out.println("Sending request");
         Call<Joke> jokeRequest = jokeService.getJokes();

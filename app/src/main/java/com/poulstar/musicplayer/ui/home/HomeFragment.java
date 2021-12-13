@@ -48,19 +48,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        Button btn = new Button(getContext());
-        btn.setText("Get a Joke");
-        btn.setOnClickListener(v -> {
-            getJokeWithEnqueue();
-//            Thread requestThread = new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    getJokeWithThread();
-//                }
-//            });
-//            requestThread.start();
-        });
-        root.addView(btn);
+
 
         return root;
     }
@@ -72,42 +60,6 @@ public class HomeFragment extends Fragment {
     }
 
     public void getJokeWithEnqueue() {
-        Api api = new Api();
-        JokeService service = api.retrofit.create(JokeService.class);
-        Call<Joke> jokeRequest = service.getJokes();
-        jokeRequest.enqueue(new Callback<Joke>() {
-            @Override
-            public void onResponse(Call<Joke> call, Response<Joke> jokeResponse) {
-                if(jokeResponse.isSuccessful()) {
-                    Joke joke = jokeResponse.body();
-                    Toast.makeText(getContext(),
-                            String.format("Setup: %s\n Delivery: %s", joke.setup, joke.delivery),
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-            @Override
-            public void onFailure(Call<Joke> call, Throwable t) {
-                Log.e("Request", "Error: " + t.getMessage());
-            }
-        });
-    }
 
-    public void getJokeWithThread() {
-        Api api = new Api();
-        JokeService service = api.retrofit.create(JokeService.class);
-        Call<Joke> jokeRequest = service.getJokes();
-        try {
-            Response<Joke> jokeResponse = jokeRequest.execute();
-            if(jokeResponse.isSuccessful()) {
-                Joke joke = jokeResponse.body();
-                getActivity().runOnUiThread(() -> {
-                    Toast.makeText(getContext(),
-                            String.format("Setup: %s\n Delivery: %s", joke.setup, joke.delivery),
-                            Toast.LENGTH_LONG).show();
-                });
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
