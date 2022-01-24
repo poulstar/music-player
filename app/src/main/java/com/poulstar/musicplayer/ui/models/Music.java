@@ -11,5 +11,5 @@ public class Music {
     public String duration;
     public String release_year;
     public String likes;
-    public List<Artist> artist;
+    public List<String> artist;
 }
