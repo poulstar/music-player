@@ -1,11 +1,15 @@
 package com.poulstar.musicplayer.ui.home;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +35,8 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
+    private ImageView imgDisk;
+    private ImageButton btnPrevious, btnNext, btnPlay;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -40,14 +46,16 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         ViewGroup root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        imgDisk = root.findViewById(R.id.imgMusicVisualizer);
+        btnPlay = root.findViewById(R.id.btnPlay);
+        btnPrevious = root.findViewById(R.id.btnPrevious);
+        btnNext = root.findViewById(R.id.btnNext);
 
+        ObjectAnimator animator = ObjectAnimator.ofFloat(imgDisk, "rotation", 360);
+        animator.setDuration(5000);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setRepeatCount(ObjectAnimator.INFINITE);
+        animator.start();
 
 
         return root;

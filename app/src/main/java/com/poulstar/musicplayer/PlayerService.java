@@ -42,14 +42,16 @@ public class PlayerService extends Service {
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-
         createChannel();
+        PendingIntent openAppIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         Notification notification =
                 new NotificationCompat.Builder(this, CHANNEL_ID)
                         .setContentTitle("Music Player")
                         .setContentText("Music player running")
                         .setSmallIcon(R.drawable.ic_baseline_library_music_24)
                         .setContentIntent(pendingIntent)
+                        .addAction(R.drawable.ic_baseline_library_music_24, "Open App", openAppIntent)
+                        .addAction(R.drawable.ic_baseline_library_music_24, "Exit", openAppIntent)
                         .build();
 
         startForeground(4, notification);
