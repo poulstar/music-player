@@ -1,4 +1,4 @@
-package com.poulstar.musicplayer.ui.dashboard;
+package com.poulstar.musicplayer.ui.library;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,13 +11,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poulstar.musicplayer.R;
@@ -36,7 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DashboardFragment extends Fragment {
+public class LibraryFragment extends Fragment {
 
     private final String TAG = "MusicPlayerList";
     private FragmentDashboardBinding binding;
