@@ -16,8 +16,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.poulstar.musicplayer.Player.MusicPlayer;
 import com.poulstar.musicplayer.R;
 import com.poulstar.musicplayer.databinding.FragmentDashboardBinding;
+import com.poulstar.musicplayer.listeners.OnMusicListItemClickListener;
 import com.poulstar.musicplayer.ui.Api;
 import com.poulstar.musicplayer.ui.list.MusicListAdapter;
 import com.poulstar.musicplayer.ui.models.Music;
@@ -69,6 +71,17 @@ public class LibraryFragment extends Fragment {
         RecyclerView recyclerView = new RecyclerView(getContext());
 
         MusicListAdapter adapter = new MusicListAdapter(musics);
+        adapter.setListener(new OnMusicListItemClickListener() {
+            @Override
+            public void onClick(Music music) {
+                MusicPlayer.self.play(root.getContext(), music.file);
+            }
+
+            @Override
+            public void onLike() {
+
+            }
+        });
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);

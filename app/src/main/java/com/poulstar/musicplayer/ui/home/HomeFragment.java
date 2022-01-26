@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.poulstar.musicplayer.Player.MusicPlayer;
 import com.poulstar.musicplayer.R;
 import com.poulstar.musicplayer.databinding.FragmentHomeBinding;
 import com.poulstar.musicplayer.ui.Api;
@@ -37,6 +38,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private ImageView imgDisk;
     private ImageButton btnPrevious, btnNext, btnPlay;
+    ObjectAnimator animator;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,14 +53,37 @@ public class HomeFragment extends Fragment {
         btnPrevious = root.findViewById(R.id.btnPrevious);
         btnNext = root.findViewById(R.id.btnNext);
 
-        ObjectAnimator animator = ObjectAnimator.ofFloat(imgDisk, "rotation", 360);
+        animator = ObjectAnimator.ofFloat(imgDisk, "rotation", 360);
         animator.setDuration(5000);
         animator.setInterpolator(new LinearInterpolator());
         animator.setRepeatCount(ObjectAnimator.INFINITE);
         animator.start();
 
+        setPlayIcon();
+        btnPlay.setOnClickListener(v -> {
+            if(MusicPlayer.self.isPlaying()) {
+                MusicPlayer.self.pause();
+            }else {
+                MusicPlayer.self.resume();
+            }
+            setPlayIcon();
+        });
 
         return root;
+    }
+
+    public void setPlayIcon() {
+        if(MusicPlayer.self.isPlaying()) {
+            btnPlay.setImageResource(R.drawable.ic_baseline_pause_24);
+            if(animator.isPaused()) {
+                animator.resume();
+            }else {
+                animator.start();
+            }
+        }else {
+            btnPlay.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+            animator.pause();
+        }
     }
 
     @Override

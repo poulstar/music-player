@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.poulstar.musicplayer.R;
+import com.poulstar.musicplayer.listeners.OnMusicListItemClickListener;
 import com.poulstar.musicplayer.ui.models.Music;
 import com.squareup.picasso.Picasso;
 
@@ -18,9 +19,14 @@ import java.util.List;
 public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.ViewHolder> {
 
     List<Music> data;
+    OnMusicListItemClickListener listener;
 
     public MusicListAdapter(List<Music> musics) {
         this.data = musics;
+    }
+
+    public void setListener(OnMusicListItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -36,6 +42,11 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
         holder.txtTitle.setText(music.name);
         holder.txtArtist.setText(music.artist.get(0));
         Picasso.get().load(music.cover).into(holder.imgView);
+        holder.container.setOnClickListener(v -> {
+            if(listener != null) {
+                listener.onClick(music);
+            }
+        });
     }
 
     @Override
@@ -48,12 +59,14 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
         TextView txtTitle;
         TextView txtArtist;
         ImageView imgView;
+        ViewGroup container;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtTitle = itemView.findViewById(R.id.txtTitle);
             txtArtist = itemView.findViewById(R.id.txtArtist);
             imgView = itemView.findViewById(R.id.imgView);
+            container = itemView.findViewById(R.id.music_item_container);
         }
     }
 
