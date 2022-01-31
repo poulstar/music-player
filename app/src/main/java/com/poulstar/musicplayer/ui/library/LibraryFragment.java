@@ -1,5 +1,6 @@
 package com.poulstar.musicplayer.ui.library;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -68,6 +69,7 @@ public class LibraryFragment extends Fragment {
     }
 
     public void addMusicListToRecyclerView(ViewGroup root, List<Music> musics) {
+        if(getContext() == null) return;
         RecyclerView recyclerView = new RecyclerView(getContext());
 
         MusicListAdapter adapter = new MusicListAdapter(musics);
