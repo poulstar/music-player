@@ -59,6 +59,10 @@ public class HomeFragment extends Fragment {
         animator.setRepeatCount(ObjectAnimator.INFINITE);
         animator.start();
 
+        MusicPlayer.self.isMusicPlaying.observe(this, aBoolean -> {
+            setPlayIcon();
+        });
+
         setPlayIcon();
         btnPlay.setOnClickListener(v -> {
             if(MusicPlayer.self.isPlaying()) {

@@ -39,30 +39,30 @@
 
         <ImageButton
             android:id="@+id/btnPrevious"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="10"
+            android:layout_weight="8"
             android:contentDescription="previous"
             android:scaleType="fitCenter"
-            tools:src="@drawable/ic_baseline_skip_previous_24" />
+            android:src="@drawable/ic_baseline_skip_previous_24" />
 
         <ImageButton
             android:id="@+id/btnPlay"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="10"
+            android:layout_weight="14"
             android:contentDescription="play"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_baseline_play_arrow_24" />
 
         <ImageButton
             android:id="@+id/btnNext"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="10"
+            android:layout_weight="8"
             android:contentDescription="next"
             android:scaleType="fitCenter"
-            tools:src="@drawable/ic_baseline_skip_next_24" />
+            android:src="@drawable/ic_baseline_skip_next_24" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

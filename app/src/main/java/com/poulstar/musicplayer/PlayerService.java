@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -18,6 +19,8 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
+
+import com.poulstar.musicplayer.broadcast.MusicPlayerBroadcastReceiver;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -44,14 +47,24 @@ public class PlayerService extends Service {
 
         createChannel();
         PendingIntent openAppIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+        Intent playIntent = new Intent(this, MusicPlayerBroadcastReceiver.class);
+        playIntent.setAction("PLAY/PAUSE");
+        PendingIntent playPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 20, playIntent, 0);
+
+        RemoteViews notificationView = new RemoteViews(getPackageName(), R.layout.custom_notification);
+        notificationView.setOnClickPendingIntent(R.id.btnPlay, playPendingIntent);
+
         Notification notification =
                 new NotificationCompat.Builder(this, CHANNEL_ID)
                         .setContentTitle("Music Player")
                         .setContentText("Music player running")
                         .setSmallIcon(R.drawable.ic_baseline_library_music_24)
                         .setContentIntent(pendingIntent)
-                        .addAction(R.drawable.ic_baseline_library_music_24, "Open App", openAppIntent)
-                        .addAction(R.drawable.ic_baseline_library_music_24, "Exit", openAppIntent)
+                        .setCustomContentView(notificationView)
+                        .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+//                        .addAction(R.drawable.ic_baseline_library_music_24, "Open App", openAppIntent)
+//                        .addAction(R.drawable.ic_baseline_library_music_24, "Exit", openAppIntent)
                         .build();
 
         startForeground(4, notification);
