@@ -13,24 +13,32 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleService;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import com.poulstar.musicplayer.Player.MusicPlayer;
 import com.poulstar.musicplayer.broadcast.MusicPlayerBroadcastReceiver;
 
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class PlayerService extends Service {
+public class PlayerService extends LifecycleService {
 
     public final String TAG = "Player Service";
     public final String CHANNEL_ID = "player_service";
     static int count = 0;
+    Notification notification;
+    RemoteViews notificationView;
 
     @Override
     public void onCreate() {
@@ -39,6 +47,7 @@ public class PlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
         Log.i(TAG, "Player service started");
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
@@ -52,10 +61,10 @@ public class PlayerService extends Service {
         playIntent.setAction("PLAY/PAUSE");
         PendingIntent playPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 20, playIntent, 0);
 
-        RemoteViews notificationView = new RemoteViews(getPackageName(), R.layout.custom_notification);
+        notificationView = new RemoteViews(getPackageName(), R.layout.custom_notification);
         notificationView.setOnClickPendingIntent(R.id.btnPlay, playPendingIntent);
 
-        Notification notification =
+        notification =
                 new NotificationCompat.Builder(this, CHANNEL_ID)
                         .setContentTitle("Music Player")
                         .setContentText("Music player running")
@@ -69,6 +78,13 @@ public class PlayerService extends Service {
 
         startForeground(4, notification);
 
+        MusicPlayer.self.music.observe(this, music -> {
+            updateNotificationTitle(music.name);
+            updateNotificationArtist(music.artist.get(0));
+        });
+        MusicPlayer.self.isMusicPlaying.observe(this, aBoolean -> {
+            updateNotificationPlaybackStatus(aBoolean);
+        });
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -79,6 +95,27 @@ public class PlayerService extends Service {
         }, 0, 2000);
 
         return START_NOT_STICKY;
+    }
+
+    public void updateNotificationTitle(String title) {
+        notificationView.setTextViewText(R.id.txtTitle, title);
+        updateNotification(notificationView);
+    }
+
+    public void updateNotificationArtist(String artist) {
+        notificationView.setTextViewText(R.id.txtArtist, artist);
+        updateNotification(notificationView);
+    }
+
+    public void updateNotificationPlaybackStatus(boolean isPlaying) {
+        notificationView.setTextViewText(R.id.btnPlay, isPlaying ? "Pause" : "Play");
+        updateNotification(notificationView);
+    }
+
+    public void updateNotification(RemoteViews view) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notification.contentView = view;
+        notificationManager.notify(4, notification);
     }
 
     public void createChannel() {
@@ -100,6 +137,7 @@ public class PlayerService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        super.onBind(intent);
         return null;
     }
 }

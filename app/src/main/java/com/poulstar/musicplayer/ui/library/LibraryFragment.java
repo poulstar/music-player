@@ -46,24 +46,7 @@ public class LibraryFragment extends Fragment {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         ViewGroup root = binding.getRoot();
 
-        List<Music> musicList = new ArrayList<>();
-        MusicPlayerService musicPlayerService = Api.self.retrofit.create(MusicPlayerService.class);
-        musicPlayerService.getMusicList(1).enqueue(new Callback<List<Music>>() {
-            @Override
-            public void onResponse(Call<List<Music>> call, Response<List<Music>> response) {
-                if (response.isSuccessful()) {
-                    for (Music music : Objects.requireNonNull(response.body())) {
-                        musicList.add(music);
-                    }
-                    addMusicListToRecyclerView(root, musicList);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Music>> call, Throwable t) {
-                Log.e(TAG, "Cannot fetch music list. " + t.getMessage());
-            }
-        });
+        addMusicListToRecyclerView(root, MusicPlayer.self.playlist);
 
         return root;
     }
@@ -76,7 +59,7 @@ public class LibraryFragment extends Fragment {
         adapter.setListener(new OnMusicListItemClickListener() {
             @Override
             public void onClick(Music music) {
-                MusicPlayer.self.play(root.getContext(), music.file);
+                MusicPlayer.self.play(root.getContext(), music);
             }
 
             @Override

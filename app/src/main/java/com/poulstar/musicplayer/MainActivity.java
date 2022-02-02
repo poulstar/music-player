@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.poulstar.musicplayer.Player.MusicPlayer;
 import com.poulstar.musicplayer.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PlayerService.class);
 //        startService(intent);
         ContextCompat.startForegroundService(getApplicationContext(), intent);
+
+        MusicPlayer.self.fetchPlayList();
     }
 
 }

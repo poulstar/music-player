@@ -10,6 +10,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private ImageView imgDisk;
     private ImageButton btnPrevious, btnNext, btnPlay;
+    private SeekBar seekBar;
     ObjectAnimator animator;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -52,6 +54,7 @@ public class HomeFragment extends Fragment {
         btnPlay = root.findViewById(R.id.btnPlay);
         btnPrevious = root.findViewById(R.id.btnPrevious);
         btnNext = root.findViewById(R.id.btnNext);
+        seekBar = root.findViewById(R.id.seekBar);
 
         animator = ObjectAnimator.ofFloat(imgDisk, "rotation", 360);
         animator.setDuration(5000);
@@ -71,6 +74,23 @@ public class HomeFragment extends Fragment {
                 MusicPlayer.self.resume();
             }
 //            setPlayIcon();
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                MusicPlayer.self.seekTo(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
         });
 
         return root;
