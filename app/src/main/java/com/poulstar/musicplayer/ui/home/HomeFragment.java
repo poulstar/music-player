@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
             }else {
                 MusicPlayer.self.resume();
             }
-            setPlayIcon();
+//            setPlayIcon();
         });
 
         return root;
@@ -79,11 +79,7 @@ public class HomeFragment extends Fragment {
     public void setPlayIcon() {
         if(MusicPlayer.self.isPlaying()) {
             btnPlay.setImageResource(R.drawable.ic_baseline_pause_24);
-            if(animator.isPaused()) {
-                animator.resume();
-            }else {
-                animator.start();
-            }
+            animator.resume();
         }else {
             btnPlay.setImageResource(R.drawable.ic_baseline_play_arrow_24);
             animator.pause();
